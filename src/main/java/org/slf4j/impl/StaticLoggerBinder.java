@@ -1,4 +1,4 @@
-package impl;
+package org.slf4j.impl;
 
 import io.rwhite226.minimallogger.LoggingConfiguration;
 import io.rwhite226.minimallogger.MinimalLogger;

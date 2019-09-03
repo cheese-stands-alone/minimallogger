@@ -1,4 +1,4 @@
-package impl;
+package org.slf4j.impl;
 
 import org.slf4j.spi.MDCAdapter;
 
