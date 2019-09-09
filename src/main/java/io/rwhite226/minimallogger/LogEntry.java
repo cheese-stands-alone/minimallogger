@@ -1,38 +1,43 @@
 package io.rwhite226.minimallogger;
 
 import org.slf4j.event.Level;
-import org.slf4j.helpers.FormattingTuple;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public class LogEntry {
 
-    public static final LogEntry SHUTDOWN_EVENT = new LogEntry(null, null, null, null, null, null);
+    public static final LogEntry SHUTDOWN_EVENT = new LogEntry(null, null, null, null, null, null, null, null);
 
     private final String loggerName;
     private final LocalDateTime timestamp;
     private final Thread thread;
     private final Map<String, String> mdc;
     private final Level level;
-    private final Supplier<FormattingTuple> tupleBuilder;
+    private final String message;
+    private final Throwable throwable;
+    private final Object[] argArray;
 
     public LogEntry(
-            String loggerName,
-            LocalDateTime timestamp,
-            Thread thread,
-            Map<String, String> mdc,
-            Level level,
-            Supplier<FormattingTuple> tupleBuilder
+            final String loggerName,
+            final LocalDateTime timestamp,
+            final Thread thread,
+            final Map<String, String> mdc,
+            final Level level,
+            final String message,
+            final Throwable throwable,
+            final Object[] argArray
     ) {
         this.loggerName = loggerName;
         this.timestamp = timestamp;
         this.thread = thread;
         this.mdc = mdc;
         this.level = level;
-        this.tupleBuilder = tupleBuilder;
+        this.message = message;
+        this.throwable = throwable;
+        this.argArray = argArray;
     }
 
     public String getLoggerName() {
@@ -55,12 +60,20 @@ public class LogEntry {
         return level;
     }
 
-    public Supplier<FormattingTuple> getTupleBuilder() {
-        return tupleBuilder;
+    public String getMessage() {
+        return message;
+    }
+
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
+    public Object[] getArgArray() {
+        return argArray;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LogEntry logEntry = (LogEntry) o;
@@ -68,24 +81,47 @@ public class LogEntry {
                 Objects.equals(timestamp, logEntry.timestamp) &&
                 Objects.equals(thread, logEntry.thread) &&
                 Objects.equals(mdc, logEntry.mdc) &&
-                level == logEntry.level &&
-                Objects.equals(tupleBuilder, logEntry.tupleBuilder);
+                Objects.equals(level, logEntry.level) &&
+                Objects.equals(message, logEntry.message) &&
+                Objects.equals(throwable, logEntry.throwable) &&
+                Arrays.equals(argArray, logEntry.argArray);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loggerName, timestamp, thread, mdc, level, tupleBuilder);
+        return Objects.hash(loggerName, timestamp, thread, mdc, level, message, throwable, Arrays.hashCode(argArray));
     }
 
     @Override
     public String toString() {
-        return "LogEntry{" +
-                "loggerName='" + loggerName + '\'' +
-                ", timestamp=" + timestamp +
-                ", thread=" + thread +
-                ", mdc=" + mdc +
-                ", level=" + level +
-                ", tupleBuilder=" + tupleBuilder +
-                '}';
+        final StringBuilder sb = new StringBuilder()
+                .append("LogEntry(loggerName=")
+                .append(loggerName)
+                .append(", timestamp=")
+                .append(timestamp)
+                .append(", thread=")
+                .append(thread)
+                .append(", mdc=")
+                .append(mdc)
+                .append(", level=")
+                .append(level)
+                .append(", message=")
+                .append(message)
+                .append(", throwable=")
+                .append(throwable)
+                .append(", argArray=");
+        if (argArray == null) {
+            sb.append("null");
+        } else {
+            sb.append("[");
+            for (int i = 0; i < argArray.length; i++) {
+                sb.append(argArray[i]);
+                if (i < (argArray.length - 1)) {
+                    sb.append(",");
+                }
+            }
+            sb.append("]");
+        }
+        return sb.append(')').toString();
     }
 }

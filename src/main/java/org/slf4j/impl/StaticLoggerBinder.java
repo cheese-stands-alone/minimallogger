@@ -10,6 +10,10 @@ import java.util.concurrent.ConcurrentMap;
 
 public final class StaticLoggerBinder implements LoggerFactoryBinder {
 
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(LoggingConfiguration::shutdown));
+    }
+
     // This field must not be final to avoid constant folding by the compiler.
     // @checkstyle off: StaticVariableName|VisibilityModifier
     public static String REQUESTED_API_VERSION = "1.7";
@@ -42,11 +46,4 @@ public final class StaticLoggerBinder implements LoggerFactoryBinder {
     public String getLoggerFactoryClassStr() {
         return factory.getClass().getName();
     }
-
-    static {
-        final Thread shutdown = new Thread(LoggingConfiguration::shutdown);
-        shutdown.setDaemon(false);
-        Runtime.getRuntime().addShutdownHook(shutdown);
-    }
-
 }

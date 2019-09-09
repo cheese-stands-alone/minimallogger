@@ -11,7 +11,6 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.time.LocalDateTime;
-import java.util.function.Supplier;
 
 public class MinimalLogger implements Logger {
 
@@ -26,7 +25,9 @@ public class MinimalLogger implements Logger {
     private void log(
             final Level level,
             final Marker marker,
-            final Supplier<FormattingTuple> tuple
+            final String message,
+            final Throwable throwable,
+            final Object[] argArray
     ) {
         final LogEntry entry = new LogEntry(
                 name,
@@ -34,7 +35,9 @@ public class MinimalLogger implements Logger {
                 Thread.currentThread(),
                 MDC.getCopyOfContextMap(),
                 level,
-                tuple
+                message,
+                throwable,
+                argArray
         );
 
         if (LoggingConfiguration.writers.isEmpty()) {
@@ -107,251 +110,342 @@ public class MinimalLogger implements Logger {
 
     @Override
     public void warn(final String msg) {
-        if (isWarnEnabled()) log(Level.WARN, null, () -> new FormattingTuple(msg));
+        if (isWarnEnabled()) log(Level.WARN, null, msg, null, null);
     }
 
     @Override
     public void warn(final String format, final Object arg) {
-        if (isWarnEnabled()) log(Level.WARN, null, () -> MessageFormatter.format(format, arg));
+        if (isWarnEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.WARN, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void warn(final String format, final Object... arguments) {
-        if (isWarnEnabled()) log(Level.WARN, null, () -> MessageFormatter.format(format, arguments));
+        if (isWarnEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.WARN, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void warn(final String format, final Object arg1, final Object arg2) {
-        if (isWarnEnabled()) log(Level.WARN, null, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isWarnEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.WARN, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void warn(final String msg, final Throwable t) {
-        if (isWarnEnabled()) log(Level.WARN, null, () -> new FormattingTuple(msg, null, t));
+        if (isWarnEnabled()) log(Level.WARN, null, msg, t, null);
     }
 
     @Override
     public void warn(final Marker marker, final String msg) {
-        if (isWarnEnabled()) log(Level.WARN, marker, () -> new FormattingTuple(msg));
+        if (isWarnEnabled()) log(Level.WARN, marker, msg, null, null);
     }
 
     @Override
     public void warn(final Marker marker, final String format, final Object arg) {
-        if (isWarnEnabled()) log(Level.WARN, marker, () -> MessageFormatter.format(format, arg));
+        if (isWarnEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.WARN, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void warn(final Marker marker, final String format, final Object arg1, Object arg2) {
-        if (isWarnEnabled()) log(Level.WARN, marker, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isWarnEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.WARN, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void warn(final Marker marker, final String format, final Object... arguments) {
-        if (isWarnEnabled()) log(Level.WARN, marker, () -> MessageFormatter.format(format, arguments));
+        if (isWarnEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.WARN, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void warn(final Marker marker, final String msg, final Throwable t) {
-        if (isWarnEnabled()) log(Level.WARN, marker, () -> new FormattingTuple(msg, null, t));
+        if (isWarnEnabled()) log(Level.WARN, marker, msg, t, null);
     }
 
     @Override
     public void debug(final String msg) {
-        if (isDebugEnabled()) log(Level.DEBUG, null, () -> new FormattingTuple(msg));
+        if (isDebugEnabled()) log(Level.DEBUG, null, msg, null, null);
     }
 
     @Override
     public void debug(final String format, final Object arg) {
-        if (isDebugEnabled()) log(Level.DEBUG, null, () -> MessageFormatter.format(format, arg));
+        if (isDebugEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.DEBUG, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void debug(final String format, final Object... arguments) {
-        if (isDebugEnabled()) log(Level.DEBUG, null, () -> MessageFormatter.format(format, arguments));
+        if (isDebugEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.DEBUG, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void debug(final String format, final Object arg1, final Object arg2) {
-        if (isDebugEnabled()) log(Level.DEBUG, null, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isDebugEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.DEBUG, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
-    public void debug(final String msg, Throwable t) {
-        if (isDebugEnabled()) log(Level.DEBUG, null, () -> new FormattingTuple(msg, null, t));
+    public void debug(final String msg, final Throwable t) {
+        if (isDebugEnabled()) log(Level.DEBUG, null, msg, t, null);
     }
 
     @Override
     public void debug(final Marker marker, final String msg) {
-        if (isDebugEnabled()) log(Level.DEBUG, marker, () -> new FormattingTuple(msg));
+        if (isDebugEnabled()) log(Level.DEBUG, marker, msg, null, null);
     }
 
     @Override
     public void debug(final Marker marker, final String format, final Object arg) {
-        if (isDebugEnabled()) log(Level.DEBUG, marker, () -> MessageFormatter.format(format, arg));
+        if (isDebugEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.DEBUG, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void debug(final Marker marker, final String format, final Object arg1, Object arg2) {
-        if (isDebugEnabled()) log(Level.DEBUG, marker, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isDebugEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.DEBUG, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void debug(final Marker marker, final String format, final Object... arguments) {
-        if (isDebugEnabled()) log(Level.DEBUG, marker, () -> MessageFormatter.format(format, arguments));
+        if (isDebugEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.DEBUG, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void debug(final Marker marker, final String msg, final Throwable t) {
-        if (isDebugEnabled()) log(Level.DEBUG, marker, () -> new FormattingTuple(msg, null, t));
+        if (isDebugEnabled()) log(Level.DEBUG, marker, msg, t, null);
     }
 
     @Override
     public void info(final String msg) {
-        if (isInfoEnabled()) log(Level.INFO, null, () -> new FormattingTuple(msg));
+        if (isInfoEnabled()) log(Level.INFO, null, msg, null, null);
     }
 
     @Override
     public void info(final String format, final Object arg) {
-        if (isInfoEnabled()) log(Level.INFO, null, () -> MessageFormatter.format(format, arg));
+        if (isInfoEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.INFO, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void info(final String format, final Object... arguments) {
-        if (isInfoEnabled()) log(Level.INFO, null, () -> MessageFormatter.format(format, arguments));
+        if (isInfoEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.INFO, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void info(final String format, final Object arg1, final Object arg2) {
-        if (isInfoEnabled()) log(Level.INFO, null, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isInfoEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.INFO, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
-    public void info(final String msg, Throwable t) {
-        if (isInfoEnabled()) log(Level.INFO, null, () -> new FormattingTuple(msg, null, t));
+    public void info(final String msg, final Throwable t) {
+        if (isInfoEnabled()) log(Level.INFO, null, msg, t, null);
     }
 
     @Override
     public void info(final Marker marker, final String msg) {
-        if (isInfoEnabled()) log(Level.INFO, marker, () -> new FormattingTuple(msg));
+        if (isInfoEnabled()) log(Level.INFO, marker, msg, null, null);
     }
 
     @Override
     public void info(final Marker marker, final String format, final Object arg) {
-        if (isInfoEnabled()) log(Level.INFO, marker, () -> MessageFormatter.format(format, arg));
+        if (isInfoEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.INFO, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void info(final Marker marker, final String format, final Object arg1, Object arg2) {
-        if (isInfoEnabled()) log(Level.INFO, marker, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isInfoEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.INFO, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void info(final Marker marker, final String format, final Object... arguments) {
-        if (isInfoEnabled()) log(Level.INFO, marker, () -> MessageFormatter.format(format, arguments));
+        if (isInfoEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.INFO, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void info(final Marker marker, final String msg, final Throwable t) {
-        if (isInfoEnabled()) log(Level.INFO, marker, () -> new FormattingTuple(msg, null, t));
+        if (isInfoEnabled()) log(Level.INFO, marker, msg, t, null);
     }
 
     @Override
     public void error(final String msg) {
-        if (isErrorEnabled()) log(Level.ERROR, null, () -> new FormattingTuple(msg));
+        if (isErrorEnabled()) log(Level.ERROR, null, msg, null, null);
     }
 
     @Override
     public void error(final String format, final Object arg) {
-        if (isErrorEnabled()) log(Level.ERROR, null, () -> MessageFormatter.format(format, arg));
+        if (isErrorEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void error(final String format, final Object... arguments) {
-        if (isErrorEnabled()) log(Level.ERROR, null, () -> MessageFormatter.format(format, arguments));
+        if (isErrorEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void error(final String format, final Object arg1, final Object arg2) {
-        if (isErrorEnabled()) log(Level.ERROR, null, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isErrorEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
-    public void error(final String msg, Throwable t) {
-        if (isErrorEnabled()) log(Level.ERROR, null, () -> new FormattingTuple(msg, null, t));
+    public void error(final String msg, final Throwable t) {
+        if (isErrorEnabled()) log(Level.ERROR, null, msg, t, null);
     }
 
     @Override
     public void error(final Marker marker, final String msg) {
-        if (isErrorEnabled()) log(Level.ERROR, marker, () -> new FormattingTuple(msg));
+        if (isErrorEnabled()) log(Level.ERROR, marker, msg, null, null);
     }
 
     @Override
     public void error(final Marker marker, final String format, final Object arg) {
-        if (isErrorEnabled()) log(Level.ERROR, marker, () -> MessageFormatter.format(format, arg));
+        if (isErrorEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void error(final Marker marker, final String format, final Object arg1, Object arg2) {
-        if (isErrorEnabled()) log(Level.ERROR, marker, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isErrorEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void error(final Marker marker, final String format, final Object... arguments) {
-        if (isErrorEnabled()) log(Level.ERROR, marker, () -> MessageFormatter.format(format, arguments));
+        if (isErrorEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void error(final Marker marker, final String msg, final Throwable t) {
-        if (isErrorEnabled()) log(Level.ERROR, marker, () -> new FormattingTuple(msg, null, t));
+        if (isErrorEnabled()) log(Level.ERROR, marker, msg, t, null);
     }
 
     @Override
     public void trace(final String msg) {
-        if (isTraceEnabled()) log(Level.TRACE, null, () -> new FormattingTuple(msg));
+        if (isTraceEnabled()) log(Level.TRACE, null, msg, null, null);
     }
 
     @Override
     public void trace(final String format, final Object arg) {
-        if (isTraceEnabled()) log(Level.TRACE, null, () -> MessageFormatter.format(format, arg));
+        if (isTraceEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void trace(final String format, final Object... arguments) {
-        if (isTraceEnabled()) log(Level.TRACE, null, () -> MessageFormatter.format(format, arguments));
+        if (isTraceEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void trace(final String format, final Object arg1, final Object arg2) {
-        if (isTraceEnabled()) log(Level.TRACE, null, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isTraceEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
-    public void trace(final String msg, Throwable t) {
-        if (isTraceEnabled()) log(Level.TRACE, null, () -> new FormattingTuple(msg, null, t));
+    public void trace(final String msg, final Throwable t) {
+        if (isTraceEnabled()) log(Level.TRACE, null, msg, t, null);
     }
 
     @Override
     public void trace(final Marker marker, final String msg) {
-        if (isTraceEnabled()) log(Level.TRACE, marker, () -> new FormattingTuple(msg));
+        if (isTraceEnabled()) log(Level.TRACE, marker, msg, null, null);
     }
 
     @Override
     public void trace(final Marker marker, final String format, final Object arg) {
-        if (isTraceEnabled()) log(Level.TRACE, marker, () -> MessageFormatter.format(format, arg));
+        if (isTraceEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg);
+            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void trace(final Marker marker, final String format, final Object arg1, Object arg2) {
-        if (isTraceEnabled()) log(Level.TRACE, marker, () -> MessageFormatter.format(format, arg1, arg2));
+        if (isTraceEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
+            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
     }
 
     @Override
     public void trace(final Marker marker, final String format, final Object... arguments) {
-        if (isTraceEnabled()) log(Level.TRACE, marker, () -> MessageFormatter.format(format, arguments));
+        if (isTraceEnabled()) {
+            final FormattingTuple tuple = MessageFormatter.format(format, arguments);
+            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+        }
+
     }
 
     @Override
     public void trace(final Marker marker, final String msg, final Throwable t) {
-        if (isTraceEnabled()) log(Level.TRACE, marker, () -> new FormattingTuple(msg, null, t));
+        if (isTraceEnabled()) log(Level.TRACE, marker, msg, t, null);
     }
 }

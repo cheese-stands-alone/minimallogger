@@ -17,7 +17,7 @@ public class ConsoleWriter implements Writer {
         this.formatter = formatter;
         if (async) {
             queue = new LinkedBlockingQueue<>();
-            writingThread = consumeAllAsync(queue, this::write1);
+            writingThread = consumeAllAsync(queue, this::write1, null);
         } else {
             queue = null;
             writingThread = null;
@@ -54,6 +54,7 @@ public class ConsoleWriter implements Writer {
             System.out.flush();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

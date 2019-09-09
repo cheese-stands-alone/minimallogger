@@ -16,10 +16,17 @@ public interface Writer {
         return LoggingConfiguration.getLevelValue();
     }
 
-    default Thread consumeAllAsync(final BlockingQueue<LogEntry> queue, final Consumer<LogEntry> consumer) {
+    default Thread consumeAllAsync(
+            final BlockingQueue<LogEntry> queue,
+            final Consumer<LogEntry> consumer,
+            final Runnable onIdle
+    ) {
         final Thread thread = new Thread(() -> {
             while (true) {
                 try {
+                    if (onIdle != null && queue.peek() == null) {
+                        onIdle.run();
+                    }
                     final LogEntry entry = queue.take();
                     if (entry == LogEntry.SHUTDOWN_EVENT) {
                         while (queue.peek() != null) {

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoggingConfiguration {
     static final CopyOnWriteArrayList<Writer> writers = new CopyOnWriteArrayList<>();
-    private static AtomicInteger baseLevel = new AtomicInteger(Level.INFO.toInt());
+    private final static AtomicInteger baseLevel = new AtomicInteger(Level.INFO.toInt());
 
     public static List<Writer> getWriters() {
         return Collections.unmodifiableList(writers);

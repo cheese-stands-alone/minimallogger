@@ -1,7 +1,6 @@
 package io.rwhite226.minimallogger.formatter;
 
 import io.rwhite226.minimallogger.LogEntry;
-import org.slf4j.helpers.FormattingTuple;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -38,13 +37,12 @@ public interface LogFormatter {
                 sb.append("}");
             }
         }
-        final FormattingTuple tuple = logEntry.getTupleBuilder().get();
         sb.append(" ");
-        sb.append(tuple.getMessage());
+        sb.append(logEntry.getMessage());
         sb.append("\n");
-        if (tuple.getThrowable() != null) {
+        if (logEntry.getThrowable() != null) {
             StringWriter sw = new StringWriter();
-            tuple.getThrowable().printStackTrace(new PrintWriter(sw));
+            logEntry.getThrowable().printStackTrace(new PrintWriter(sw));
             sb.append(sw.getBuffer());
             sb.append("\n");
         }
