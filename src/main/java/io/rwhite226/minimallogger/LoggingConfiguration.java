@@ -21,7 +21,7 @@ public class LoggingConfiguration {
     public static void addWriters(final List<Writer> newWriters) {
         int level = Level.WARN.toInt();
         for (final Writer writer : newWriters) {
-            int writerLevel = writer.getLevelValue()
+            int writerLevel = writer.getLevelValue();
             if (writerLevel < level) {
                 level = writerLevel;
             }
