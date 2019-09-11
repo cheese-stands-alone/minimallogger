@@ -389,7 +389,7 @@ public class MinimalLogger implements Logger {
     public void trace(final String format, final Object arg) {
         if (isTraceEnabled()) {
             final FormattingTuple tuple = MessageFormatter.format(format, arg);
-            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+            log(Level.TRACE, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
         }
     }
 
@@ -397,7 +397,7 @@ public class MinimalLogger implements Logger {
     public void trace(final String format, final Object... arguments) {
         if (isTraceEnabled()) {
             final FormattingTuple tuple = MessageFormatter.format(format, arguments);
-            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+            log(Level.TRACE, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
         }
     }
 
@@ -405,7 +405,7 @@ public class MinimalLogger implements Logger {
     public void trace(final String format, final Object arg1, final Object arg2) {
         if (isTraceEnabled()) {
             final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
-            log(Level.ERROR, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+            log(Level.TRACE, null, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
         }
     }
 
@@ -423,7 +423,7 @@ public class MinimalLogger implements Logger {
     public void trace(final Marker marker, final String format, final Object arg) {
         if (isTraceEnabled()) {
             final FormattingTuple tuple = MessageFormatter.format(format, arg);
-            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+            log(Level.TRACE, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
         }
     }
 
@@ -431,7 +431,7 @@ public class MinimalLogger implements Logger {
     public void trace(final Marker marker, final String format, final Object arg1, Object arg2) {
         if (isTraceEnabled()) {
             final FormattingTuple tuple = MessageFormatter.format(format, arg1, arg2);
-            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+            log(Level.TRACE, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
         }
     }
 
@@ -439,7 +439,7 @@ public class MinimalLogger implements Logger {
     public void trace(final Marker marker, final String format, final Object... arguments) {
         if (isTraceEnabled()) {
             final FormattingTuple tuple = MessageFormatter.format(format, arguments);
-            log(Level.ERROR, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
+            log(Level.TRACE, marker, tuple.getMessage(), tuple.getThrowable(), tuple.getArgArray());
         }
 
     }
