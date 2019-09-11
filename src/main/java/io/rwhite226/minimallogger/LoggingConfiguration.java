@@ -19,11 +19,14 @@ public class LoggingConfiguration {
     }
 
     public static void addWriters(final List<Writer> newWriters) {
+        int level = Level.WARN.toInt();
         for (final Writer writer : newWriters) {
-            if (writer.getLevelValue() > baseLevel.get()) {
-                baseLevel.set(writer.getLevelValue());
+            int writerLevel = writer.getLevelValue()
+            if (writerLevel < level) {
+                level = writerLevel;
             }
         }
+        baseLevel.set(level);
         writers.addAll(newWriters);
     }
 
